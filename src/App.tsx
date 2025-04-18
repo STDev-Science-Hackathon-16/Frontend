@@ -1,13 +1,13 @@
-import { Button } from "./components/ui/button";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Ending from "./pages/Ending";
 
 function App() {
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-100">
-			<Button variant="default">기본 버튼</Button>
-			<Button variant="outline" className="ml-4">
-				아웃라인 버튼
-			</Button>
-		</div>
+		<Routes>
+			<Route path="/" element={<Home />} />
+			<Route path="/ending" element={<Ending />} />
+		</Routes>
 	);
 }
 
