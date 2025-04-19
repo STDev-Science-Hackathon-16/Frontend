@@ -3,18 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 function Ending() {
 	const navigate = useNavigate();
-	const {
-		bread,
-		time,
-		temperature,
-		tap,
-		quiz,
-		bakeTem,
-		bakeHum,
-		dieFlag,
-		step,
-		score,
-	} = useBreadStore();
+	const { bread, time, temperature, tap, quiz, bakeTem, bakeHum, score } =
+		useBreadStore();
 
 	const getBreadImage = () => {
 		if (bread != null) if (bread === "치아바타") return "/ciabatta.png";
