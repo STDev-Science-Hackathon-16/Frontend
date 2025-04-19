@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Pretendard', sans-serif;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -102,8 +112,6 @@
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {
