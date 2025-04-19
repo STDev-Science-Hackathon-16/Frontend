@@ -1,16 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useTokenStore } from "@/stores/useTokenStore";
+import { useGameIdStore } from "@/stores/useGameIdStore";
 
 function PrimaryFermentation() {
 	const navigate = useNavigate();
 	const token = useTokenStore((state) => state.token);
-
+	const gameId = useGameIdStore((state) => state.gameId);
 	const [showTutorial, setShowTutorial] = useState(true);
 	const [temperature, setTemperature] = useState(25);
 	const [progress, setProgress] = useState(0);
 	const startTimeRef = useRef(Date.now());
-	const isGameOver = useRef(false); // 중복 요청 방지
+	const isGameOver = useRef(false);
 
 	const getDoughLeft = () => {
 		const start = 15.5;
@@ -115,7 +116,7 @@ function PrimaryFermentation() {
 					"X-USER-ID": token?.toString() || "",
 				},
 				body: JSON.stringify({
-					gameId: 26,
+					gameId: gameId,
 					time: elapsedSeconds,
 					temperature: doughProgress,
 					flag: flag,
@@ -133,7 +134,7 @@ function PrimaryFermentation() {
 		} catch (error) {
 			console.error("결과 전송 실패:", error);
 		}
-	}, [navigate, doughProgress, temperature, token]);
+	}, [navigate, doughProgress, temperature, token, gameId]);
 
 	useEffect(() => {
 		const elapsedSeconds = Math.floor(
@@ -172,8 +173,7 @@ function PrimaryFermentation() {
 						<br />
 						<br /> 너무 덥게 하면 익어버리고, 너무 춥게 하면 잠들어버린답니다!
 						<br />
-						<br /> 왼쪽 아래 버튼으로 추워지지도, 뜨거워지지도 않게 잘
-						발효시켜봐요.
+						<br /> 스페이스바로 추워지지도, 뜨거워지지도 않게 잘 발효시켜봐요.
 					</div>
 					<button
 						type="button"
@@ -200,8 +200,8 @@ function PrimaryFermentation() {
 						할 말이 들어갑니다(Pretendard)
 					</div>
 				</div>
-				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-gray-200 px-4 py-2 rounded-md text-center text-sm z-30">
-					프로세스와 예행(15일 중)
+				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md text-center text-sm z-30">
+					<img src="/progress2.png" alt="프로그레스 바" />
 				</div>
 				<button
 					type="button"

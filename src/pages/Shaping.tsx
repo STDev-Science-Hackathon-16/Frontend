@@ -1,9 +1,14 @@
+import { useGameIdStore } from "@/stores/useGameIdStore";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Shaping() {
 	const token = useTokenStore((state) => state.token);
+	const gameId = useGameIdStore((state) => state.gameId);
+
+	const [showTutorial, setShowTutorial] = useState(true);
+
 	const [doughcatClickCount, setDoughcatClickCount] = useState(0);
 	const navigate = useNavigate();
 
@@ -29,7 +34,7 @@ function Shaping() {
 					"X-USER-ID": token?.toString() || "",
 				},
 				body: JSON.stringify({
-					gameId: 1,
+					gameId: gameId,
 					tap: doughcatClickCount,
 				}),
 			});
@@ -51,6 +56,34 @@ function Shaping() {
 			className="flex items-center justify-center min-h-screen w-full bg-cover bg-center fixed top-0 left-0 right-0 bottom-0 overflow-hidden"
 			style={{ backgroundImage: `url('/bg1.png')` }}
 		>
+			{showTutorial && (
+				<div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex flex-col items-center justify-center text-white px-6">
+					<div className="mx-auto p-4 text-xl leading-relaxed">
+						1차 발효로 형성된 기포와 구조는 불안정해요!
+						<br />
+						<br /> 그래서 반죽의 표면을 매끄럽게 다듬고 내부 기포의 크기를
+						조절하는 성형 과정이 들어가요.
+						<br />
+						<br />
+						성형하고 다시 한 번 발효를 하면, 더 섬세하고 균일한 기포망이
+						완성되죠.
+						<br />
+						<br /> 이 과정을 거쳐야 빵이 예쁘고 맛있게 부풀 수 있어요.
+						<br />
+						<br /> 반죽을 토닥토닥~ 예쁘게 다듬어줄 거예요.
+						<br />
+						<br /> 너무 많이 만지면 부풀지 않고, 너무 적게 만지면 규칙적이지
+						않게 부풀겠죠?
+						<br />
+						<br /> 도우냥의 섬세한 손길을 보여줄 때예요!
+					</div>
+					<button
+						type="button"
+						onClick={() => setShowTutorial(false)}
+						className="absolute bottom-8 right-8 w-[200px] h-[60px] bg-[url('/nextbtn.png')] bg-contain bg-no-repeat bg-center bg-transparent p-0 border-none z-20"
+					/>
+				</div>
+			)}
 			<div className="absolute top-8 left-8 right-8 flex justify-between items-start z-20">
 				<div className="flex items-center gap-2">
 					<div className="relative w-20 h-20 flex-shrink-0">
@@ -69,10 +102,14 @@ function Shaping() {
 						할 말이 들어갑니다(Pretendard)
 					</div>
 				</div>
-				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-gray-200 px-4 py-2 rounded-md text-center text-sm z-30">
-					프로세스와 예행(15일 중)
+				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md text-center text-sm z-30">
+					<img src="/progress3.png" alt="프로그레스 바" />
 				</div>
-				<button type="button" style={{ transform: "scale(0.7)" }}>
+				<button
+					type="button"
+					style={{ transform: "scale(0.7)" }}
+					onClick={() => setShowTutorial(true)}
+				>
 					<img src="/infoBtn.png" alt="인포메이션 버튼" />
 				</button>
 			</div>

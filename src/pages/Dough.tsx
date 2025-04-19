@@ -1,3 +1,4 @@
+import { useGameIdStore } from "@/stores/useGameIdStore";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -5,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function Dough() {
 	const navigate = useNavigate();
 	const [showTutorial, setShowTutorial] = useState(true);
+	const { setGameId } = useGameIdStore();
 
 	const token = useTokenStore((state) => state.token);
 
@@ -136,9 +138,9 @@ function Dough() {
 			});
 
 			const result = await response.json();
-			console.log(result);
 
 			if (result.status === "success" && result.data.pass === true) {
+				setGameId(result.data.gameId);
 				navigate("/primary");
 			} else if (result.status === "success" && result.data.pass === false) {
 				navigate("/fail");
@@ -200,8 +202,8 @@ function Dough() {
 						할 말이 들어갑니다(Pretendard)
 					</div>
 				</div>
-				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-gray-200 px-4 py-2 rounded-md text-center text-sm z-30">
-					프로세스와 예행(15일 중)
+				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md text-center text-sm z-30">
+					<img src="/progress1.png" alt="프로그레스 바" />
 				</div>
 				<button
 					type="button"
