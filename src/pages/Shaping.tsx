@@ -2,6 +2,7 @@ import { useGameIdStore } from "@/stores/useGameIdStore";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 function Shaping() {
 	const token = useTokenStore((state) => state.token);
@@ -43,6 +44,12 @@ function Shaping() {
 			);
 
 			const result = await response.json();
+
+			if (result.data?.reward?.trim()) {
+				toast(result.data.reward.trim(), {
+					icon: '🎉',
+				});
+			}
 
 			if (result.status === "success" && result.data.pass === true) {
 				navigate("/secondary");

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useGameIdStore } from "@/stores/useGameIdStore";
+import toast from 'react-hot-toast';
 
 function PrimaryFermentation() {
 	const navigate = useNavigate();
@@ -128,6 +129,13 @@ function PrimaryFermentation() {
 			console.log(elapsedSeconds, doughProgress, "flag:", flag);
 
 			const result = await response.json();
+
+			if (result.data?.reward?.trim()) {
+				toast(result.data.reward.trim(), {
+					icon: '🎉',
+				});
+			}
+
 			if (result.status === "success" && result.data.pass === true) {
 				navigate("/shaping");
 			} else if (result.status === "success" && result.data.pass === false) {

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTokenStore } from "@/stores/useTokenStore";
+import toast from 'react-hot-toast';
 
 const loginSchema = z.object({
 	phone: z
@@ -47,6 +48,12 @@ function Home() {
 			if (json.status === "success") {
 				setToken(json.data.token);
 				setIsLoggedIn(true);
+
+				if (json.data?.reward?.trim()) {
+					toast(json.data.reward.trim(), {
+						icon: '🎉',
+					});
+				}
 			}
 		} catch (err) {
 			console.error("로그인 요청 실패", err);
@@ -143,7 +150,13 @@ function Home() {
 					</div>
 				</form>
 			)}
-			{isLoggedIn && <div> 게임을 시작하시려면 아무곳이나 클릭해보세요</div>}
+				{isLoggedIn && (
+				<div style={{ backgroundColor: '#e9d7c8', padding: '12px', borderRadius: '8px' }}>
+					<div className="blinking-text">
+					게임을 시작하시려면 아무곳이나 클릭해보세요
+					</div>
+				</div>
+				)}
 		</div>
 	);
 }

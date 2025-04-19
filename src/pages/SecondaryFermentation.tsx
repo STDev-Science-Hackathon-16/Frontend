@@ -2,6 +2,7 @@ import { useGameIdStore } from "@/stores/useGameIdStore";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 function SecondaryFermentation() {
 	const [showTutorial, setShowTutorial] = useState(true);
@@ -96,6 +97,12 @@ function SecondaryFermentation() {
 			);
 
 			const result = await response.json();
+
+			if (result.data?.reward?.trim()) {
+				toast(result.data.reward.trim(), {
+					icon: '🎉',
+				});
+			}
 
 			if (result.status === "success" && result.data.pass === true) {
 				navigate("/baking");
