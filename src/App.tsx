@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Dough from "./pages/Dough";
 import PrimaryFermentation from "./pages/PrimaryFermentation";
+import Shaping from "./pages/Shaping";
 import Fail from "./pages/Fail";
 import Ending from "./pages/Ending";
 
@@ -11,6 +12,7 @@ function App() {
 			<Route path="/" element={<Home />} />
 			<Route path="/dough" element={<Dough />} />
 			<Route path="/primary" element={<PrimaryFermentation />} />
+			<Route path="/shaping" element={<Shaping />} />
 			<Route path="/fail" element={<Fail />} />
 			<Route path="/ending" element={<Ending />} />
 		</Routes>
