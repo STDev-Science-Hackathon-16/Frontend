@@ -1,6 +1,13 @@
+import { useTokenStore } from "@/stores/useTokenStore";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Dough() {
+	const navigate = useNavigate();
+	const [showTutorial, setShowTutorial] = useState(true);
+
+	const token = useTokenStore().token;
+
 	const [waterClickCount, setWaterClickCount] = useState(0);
 	const [oliveoilClickCount, setOliveoilClickCount] = useState(0);
 	const [yeastClickCount, setYeastClickCount] = useState(0);
@@ -83,11 +90,98 @@ function Dough() {
 			: "/bakingpowder.png";
 	};
 
+	const handleNextClick = async () => {
+		const select: number[] = [];
+		if (waterClickCount >= 1) {
+			for (let i = 0; i < waterClickCount; i++) {
+				select.push(1);
+			}
+		}
+		if (oliveoilClickCount >= 1) {
+			for (let i = 0; i < oliveoilClickCount; i++) {
+				select.push(2);
+			}
+		}
+		if (levainClickCount === 1) {
+			select.push(3);
+		}
+		if (weakflourClickCount === 1) {
+			select.push(4);
+		}
+		if (strongflourClickCount === 1) {
+			select.push(5);
+		}
+		if (yeastClickCount === 1) {
+			select.push(6);
+		}
+		if (saltClickCount === 1) {
+			select.push(7);
+		}
+		if (sugarClickCount === 1) {
+			select.push(8);
+		}
+		if (bakingpowderClickCount === 1) {
+			select.push(9);
+		}
+
+		try {
+			const response = await fetch("http://54.79.169.133:8080/api/game/step1", {
+				method: "POST",
+				credentials: "include",
+				headers: {
+					"Content-Type": "application/json",
+					"X-USER-ID": String(token),
+				},
+				body: JSON.stringify({ select }),
+			});
+
+			const result = await response.json();
+			console.log(result);
+
+			if (result.status === "success" && result.data.pass === true) {
+				navigate("/primary");
+			} else if (result.status === "success" && result.data.pass === false) {
+				navigate("/fail");
+			}
+		} catch (error) {
+			console.error("Error during validation:", error);
+		}
+	};
+
 	return (
 		<div
 			className="flex items-center justify-center min-h-screen w-full bg-cover bg-top fixed top-0 left-0 right-0 bottom-0 overflow-hidden"
 			style={{ backgroundImage: `url('/bg1.png')` }}
 		>
+			{showTutorial && (
+				<div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex flex-col items-center justify-center text-white px-6">
+					<div className="mx-auto p-4 text-xl leading-relaxed">
+						밀가루 속에는 글루테닌과 글리아딘이라는 단백질이 있어요.
+						<br />
+						<br />이 단백질들은 물을 만나면 끈적한 그물망인 글루텐을 만들죠.
+						<br />
+						<br />
+						글루텐은 이스트가 만든 기체를 가둬주는 일종의 풍선껍질 역할을 해요.
+						<br />
+						<br />이 구조 덕분에 반죽은 부풀 수 있고, 빵은 가볍고 폭신한 질감을
+						갖게 되는 거예요!
+						<br />
+						<br />
+						이제 진짜 반죽을 해볼 시간이에요!
+						<br />
+						<br /> 물, 밀가루, 소금… 다 준비됐죠?
+						<br />
+						<br />
+						근데 한번 넣으면… 다시 재료를 분리할 수 없으니 주의해요!
+					</div>
+					<button
+						type="button"
+						onClick={() => setShowTutorial(false)}
+						className="absolute bottom-8 right-8 w-[200px] h-[60px] bg-[url('/nextbtn.png')] bg-contain bg-no-repeat bg-center bg-transparent p-0 border-none z-20"
+					/>
+				</div>
+			)}
+
 			<div className="absolute top-8 left-8 right-8 flex justify-between items-start z-20">
 				<div className="flex items-center gap-2">
 					<div className="relative w-20 h-20 flex-shrink-0">
@@ -109,7 +203,11 @@ function Dough() {
 				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-gray-200 px-4 py-2 rounded-md text-center text-sm z-30">
 					프로세스와 예행(15일 중)
 				</div>
-				<button type="button" style={{ transform: "scale(0.7)" }}>
+				<button
+					type="button"
+					style={{ transform: "scale(0.7)" }}
+					onClick={() => setShowTutorial(true)}
+				>
 					<img src="/infoBtn.png" alt="인포메이션 버튼" />
 				</button>
 			</div>
@@ -184,6 +282,11 @@ function Dough() {
 					/>
 				</button>
 			</div>
+			<button
+				type="button"
+				onClick={handleNextClick}
+				className="absolute bottom-8 right-8 w-[200px] h-[60px] bg-[url('/nextbtn.png')] bg-contain bg-no-repeat bg-center bg-transparent p-0 border-none z-20"
+			/>
 		</div>
 	);
 }
