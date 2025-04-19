@@ -61,7 +61,7 @@ function Baking() {
 					);
 					if (!response.ok) throw new Error("Failed to post game data");
 					const result = await response.json();
-					if (result.status === "success" && result.data.bread !== null) {
+					if (result.status === "success" && result.data?.bread !== null) {
 						useBreadStore.getState().setBreadState(result.data);
 						navigate("/ending");
 					}
