@@ -128,7 +128,7 @@ function Dough() {
 
 		try {
 			const response = await fetch(
-				"http://54.180.191.123:8080//api/game/step1",
+				"http://54.180.191.123:8080/api/game/step1",
 				{
 					method: "POST",
 					credentials: "include",
