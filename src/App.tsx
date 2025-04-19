@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Dough from "./pages/Dough";
 import PrimaryFermentation from "./pages/PrimaryFermentation";
 import Shaping from "./pages/Shaping";
+import SecondaryFermentation from "./pages/SecondaryFermentation";
 import Fail from "./pages/Fail";
 import Ending from "./pages/Ending";
 
@@ -13,6 +14,7 @@ function App() {
 			<Route path="/dough" element={<Dough />} />
 			<Route path="/primary" element={<PrimaryFermentation />} />
 			<Route path="/shaping" element={<Shaping />} />
+			<Route path="/secondary" element={<SecondaryFermentation />} />
 			<Route path="/fail" element={<Fail />} />
 			<Route path="/ending" element={<Ending />} />
 		</Routes>
