@@ -1,3 +1,4 @@
+import { useGameIdStore } from "@/stores/useGameIdStore";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +7,7 @@ function SecondaryFermentation() {
 	const [showTutorial, setShowTutorial] = useState(true);
 	const [clickcount, setClickcount] = useState(0);
 	const token = useTokenStore((state) => state.token);
+	const gameId = useGameIdStore((state) => state.gameId);
 
 	const questions = [
 		{
@@ -87,6 +89,7 @@ function SecondaryFermentation() {
 						"X-USER-ID": token?.toString() || "",
 					},
 					body: JSON.stringify({
+						gameId: gameId,
 						quiz: correctCount,
 					}),
 				},
@@ -95,7 +98,7 @@ function SecondaryFermentation() {
 			const result = await response.json();
 
 			if (result.status === "success" && result.data.pass === true) {
-				navigate("/ending");
+				navigate("/baking");
 			} else if (result.status === "success" && result.data.pass === false) {
 				navigate("/fail");
 			}
