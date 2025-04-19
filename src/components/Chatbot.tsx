@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import { AiOutlineSend } from "react-icons/ai";
+import { useFailStore } from "@/stores/useFailStore";
 interface ChatMessage {
 	role: "user" | "assistant" | "system";
 	content: string;
@@ -66,11 +67,26 @@ const context = `당신은 숙련된 베이킹 전문가입니다. 사용자가 
 캐릭터를 유지하며, 질문 + 설명 + 피드백을 균형 있게 담아주세요.`;
 
 const Chatbot = () => {
+	const fail = useFailStore();
+	const getFailImage = () => {
+		if (typeof fail === "number" && fail === 0) {
+			return "/doughdie.png";
+		}
+		if (typeof fail === "number" && fail === 1) {
+			return "/fermdie.png";
+		}
+		if (typeof fail === "number" && fail === 2) {
+			return "/shapingdie.png";
+		}
+		if (typeof fail === "number" && fail === 3) {
+			return "/bakingdie.png";
+		}
+	};
+
 	const [userInput, setUserInput] = useState<string>(""); // 사용자 입력 상태 관리
 	const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]); // 채팅 히스토리 관리
 	const [isHide, setIsHide] = useState<boolean>(false);
 	const chatBoxRef = useRef<HTMLDivElement>(null);
-	const [isInitialized, setIsInitialized] = useState<boolean>(false);
 
 	const chatRef = useRef<HTMLDivElement>(null);
 
@@ -181,79 +197,99 @@ const Chatbot = () => {
 	}, [chatHistory]);
 
 	return (
-		<section className="card w-1/2 min-w-[50%] bg-white h-full mt-4 shadow-lg">
-			{/* 채팅 메시지를 표시하는 영역 */}
-			<div ref={chatBoxRef} className="card-body flex-grow overflow-y-scroll ">
-				<div
-					ref={chatRef}
-					className="flex-grow flex flex-col align-bottom justify-end gap-1 snap-y snap-mandatory "
-				>
-					{chatHistory.map((message, index) => (
-						<div
-							// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-							key={index}
-							className={`flex items-center snap-center ${message.role === "user" ? "justify-end" : "justify-start"}`}
-						>
-							{message.role === "user" && (
-								<div className="flex items-end max-w-[70%] my-1">
-									<div className="bg-orange-200 rounded-lg py-2 px-3 mr-2">
-										<p className="text-sm">{message.content}</p>
-									</div>
-									<div className="flex-shrink-0 w-10 h-10">
-										{/* <img src={chatFox} alt="당신" className="w-full h-full rounded-full" /> */}
-									</div>
-								</div>
-							)}
-							{message.role === "assistant" && (
-								<div className="flex items-end max-w-[70%] my-1">
-									<div className="flex-shrink-0 w-10 h-10 mr-2">
-										{/* <img src={chatPrince} alt="도우미" className="w-full h-full rounded-full" /> */}
-									</div>
-									<div className="bg-blue-200 rounded-lg py-2 px-3">
-										<ReactMarkdown>{message.content}</ReactMarkdown>
-									</div>
-								</div>
-							)}
-							{message.role === "system" && (
-								<div className="bg-red-100 text-red-700 px-4 py-2 mx-auto rounded-lg max-w-[80%]">
-									<p className="text-sm">{message.content}</p>
-								</div>
-							)}
-						</div>
-					))}
-				</div>
-			</div>
+		<div
+			className="flex items-center justify-center min-h-screen w-full bg-cover bg-top fixed top-0 left-0 right-0 bottom-0 overflow-hidden"
+			style={{ backgroundImage: `url('/bg1.png')` }}
+		>
+			<div className="absolute inset-0 bg-black opacity-80" />
 
-			{/* 입력창을 항상 화면 하단에 고정 */}
-			<div className="card-actions bottom-0 bg-white py-2">
-				<div className="flex flex-wrap gap-2 justify-center">
-					{step.map((reply) => (
-						<button
-							type="button"
-							key={reply}
-							onClick={() => handleQuickReply(reply)}
-							className={` bg-gray-200 rounded-full h-9 w-20 font-bold text-gray-600 hover:bg-blue-200 text-sm ${isHide ? "hidden" : "block"}`}
+			<div className="flex justify-end items-center w-full h-screen pr-4 z-10">
+				<img
+					src={getFailImage()}
+					alt="실패 반죽"
+					className="absolute top-[30%] left-[15%] w-[18%] m-4"
+				/>
+				<section
+					id="chat-scroll-allowed"
+					className="card w-1/2 bg-white h-[90vh] shadow-lg rounded-xl"
+				>
+					{/* 채팅 메시지를 표시하는 영역 */}
+					<div
+						ref={chatBoxRef}
+						className="card-body flex-grow overflow-y-scroll "
+					>
+						<div
+							ref={chatRef}
+							className="flex-grow flex flex-col align-bottom justify-end gap-1 snap-y snap-mandatory "
 						>
-							{reply}
-						</button>
-					))}
-				</div>
-				<form onSubmit={handleSubmit} className="w-full p-7 pt-2">
-					<div className="flex px-5 py-3 border-2 border-gray-400 rounded-full justify-between">
-						<input
-							type="text"
-							value={userInput}
-							onChange={handleInputChange}
-							placeholder="궁금한 과학 원리를 물어봐!"
-							className="w-full outline-none"
-						/>
-						<button type="submit" className="ml-2">
-							<AiOutlineSend />
-						</button>
+							{chatHistory.map((message, index) => (
+								<div
+									// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+									key={index}
+									className={`flex items-center snap-center ${message.role === "user" ? "justify-end" : "justify-start"}`}
+								>
+									{message.role === "user" && (
+										<div className="flex items-end max-w-[70%] my-1">
+											<div className="bg-orange-200 rounded-lg py-2 px-3 mr-2">
+												<p className="text-sm">{message.content}</p>
+											</div>
+											<div className="flex-shrink-0 w-10 h-10">
+												{/* <img src={chatFox} alt="당신" className="w-full h-full rounded-full" /> */}
+											</div>
+										</div>
+									)}
+									{message.role === "assistant" && (
+										<div className="flex items-end max-w-[70%] my-1">
+											<div className="flex-shrink-0 w-10 h-10 mr-2">
+												{/* <img src={chatPrince} alt="도우미" className="w-full h-full rounded-full" /> */}
+											</div>
+											<div className="bg-blue-200 rounded-lg py-2 px-3">
+												<ReactMarkdown>{message.content}</ReactMarkdown>
+											</div>
+										</div>
+									)}
+									{message.role === "system" && (
+										<div className="bg-red-100 text-red-700 px-4 py-2 mx-auto rounded-lg max-w-[80%]">
+											<p className="text-sm">{message.content}</p>
+										</div>
+									)}
+								</div>
+							))}
+						</div>
 					</div>
-				</form>
+
+					{/* 입력창을 항상 화면 하단에 고정 */}
+					<div className="card-actions bottom-0 bg-white py-2">
+						<div className="flex flex-wrap gap-2 justify-center">
+							{step.map((reply) => (
+								<button
+									type="button"
+									key={reply}
+									onClick={() => handleQuickReply(reply)}
+									className={` bg-gray-200 rounded-full h-9 w-20 font-bold text-gray-600 hover:bg-blue-200 text-sm ${isHide ? "hidden" : "block"}`}
+								>
+									{reply}
+								</button>
+							))}
+						</div>
+						<form onSubmit={handleSubmit} className="w-full p-7 pt-2">
+							<div className="flex px-5 py-3 border-2 border-gray-400 rounded-full justify-between">
+								<input
+									type="text"
+									value={userInput}
+									onChange={handleInputChange}
+									placeholder="궁금한 과학 원리를 물어봐!"
+									className="w-full outline-none"
+								/>
+								<button type="submit" className="ml-2">
+									<AiOutlineSend />
+								</button>
+							</div>
+						</form>
+					</div>
+				</section>
 			</div>
-		</section>
+		</div>
 	);
 };
 

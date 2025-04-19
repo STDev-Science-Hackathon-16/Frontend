@@ -2,9 +2,11 @@ import { useGameIdStore } from "@/stores/useGameIdStore";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
+import { useFailStore } from "@/stores/useFailStore";
 
 function SecondaryFermentation() {
+	const { setFail } = useFailStore();
 	const [showTutorial, setShowTutorial] = useState(true);
 	const [clickcount, setClickcount] = useState(0);
 	const token = useTokenStore((state) => state.token);
@@ -100,13 +102,14 @@ function SecondaryFermentation() {
 
 			if (result.data?.reward?.trim()) {
 				toast(result.data.reward.trim(), {
-					icon: '🎉',
+					icon: "🎉",
 				});
 			}
 
 			if (result.status === "success" && result.data.pass === true) {
 				navigate("/baking");
 			} else if (result.status === "success" && result.data.pass === false) {
+				setFail(1);
 				navigate("/fail");
 			}
 		} catch (error) {

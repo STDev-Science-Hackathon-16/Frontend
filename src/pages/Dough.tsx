@@ -2,12 +2,14 @@ import { useGameIdStore } from "@/stores/useGameIdStore";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
+import { useFailStore } from "@/stores/useFailStore";
 
 function Dough() {
 	const navigate = useNavigate();
 	const [showTutorial, setShowTutorial] = useState(true);
 	const { setGameId } = useGameIdStore();
+	const { setFail } = useFailStore();
 
 	const token = useTokenStore((state) => state.token);
 
@@ -148,14 +150,15 @@ function Dough() {
 
 			if (result.data?.reward?.trim()) {
 				toast(result.data.reward.trim(), {
-					icon: '🎉',
+					icon: "🎉",
 				});
 			}
 
 			if (result.status === "success" && result.data.pass === true) {
 				setGameId(result.data.gameId);
-				navigate("/primary");		
+				navigate("/primary");
 			} else if (result.status === "success" && result.data.pass === false) {
+				setFail(0);
 				navigate("/fail");
 			}
 		} catch (error) {

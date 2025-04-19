@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useGameIdStore } from "@/stores/useGameIdStore";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
+import { useFailStore } from "@/stores/useFailStore";
 
 function PrimaryFermentation() {
+	const { setFail } = useFailStore();
 	const navigate = useNavigate();
 	const token = useTokenStore((state) => state.token);
 	const gameId = useGameIdStore((state) => state.gameId);
@@ -132,20 +134,21 @@ function PrimaryFermentation() {
 
 			if (result.data?.reward?.trim()) {
 				toast(result.data.reward.trim(), {
-					icon: '🎉',
+					icon: "🎉",
 				});
 			}
 
 			if (result.status === "success" && result.data.pass === true) {
 				navigate("/shaping");
 			} else if (result.status === "success" && result.data.pass === false) {
+				setFail(1);
 				navigate("/fail");
 				console.log(result);
 			}
 		} catch (error) {
 			console.error("결과 전송 실패:", error);
 		}
-	}, [navigate, doughProgress, temperature, token, gameId]);
+	}, [navigate, doughProgress, temperature, token, gameId, setFail]);
 
 	useEffect(() => {
 		const elapsedSeconds = Math.floor(

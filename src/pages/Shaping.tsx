@@ -2,9 +2,11 @@ import { useGameIdStore } from "@/stores/useGameIdStore";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
+import { useFailStore } from "@/stores/useFailStore";
 
 function Shaping() {
+	const { setFail } = useFailStore();
 	const token = useTokenStore((state) => state.token);
 	const gameId = useGameIdStore((state) => state.gameId);
 
@@ -47,13 +49,14 @@ function Shaping() {
 
 			if (result.data?.reward?.trim()) {
 				toast(result.data.reward.trim(), {
-					icon: '🎉',
+					icon: "🎉",
 				});
 			}
 
 			if (result.status === "success" && result.data.pass === true) {
 				navigate("/secondary");
 			} else if (result.status === "success" && result.data.pass === false) {
+				setFail(2);
 				navigate("/fail");
 			}
 		} catch (error) {

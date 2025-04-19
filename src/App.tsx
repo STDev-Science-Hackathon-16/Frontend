@@ -7,7 +7,7 @@ import SecondaryFermentation from "./pages/SecondaryFermentation";
 import Baking from "./pages/Baking";
 import Chatbot from "./components/Chatbot";
 import Ending from "./pages/Ending";
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
 
 function App() {
 	return (

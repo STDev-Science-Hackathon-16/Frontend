@@ -7,10 +7,11 @@ import GetRandomArray, {
 import { useGameIdStore } from "@/stores/useGameIdStore";
 import { useTokenStore } from "@/stores/useTokenStore";
 import { useBreadStore } from "@/stores/useBreadStore";
+import { useFailStore } from "@/stores/useFailStore";
 
 function Baking() {
 	const navigate = useNavigate();
-
+	const { setFail } = useFailStore();
 	const token = useTokenStore((state) => state.token);
 	const gameId = useGameIdStore((state) => state.gameId);
 	const [showTutorial, setShowTutorial] = useState(true);
@@ -64,6 +65,12 @@ function Baking() {
 					if (result.status === "success" && result.data?.bread !== null) {
 						useBreadStore.getState().setBreadState(result.data);
 						navigate("/ending");
+					} else if (
+						result.status === "success" &&
+						result.data.pass === false
+					) {
+						setFail(3);
+						navigate("/fail");
 					}
 				} catch (error) {
 					console.error("Error posting game data:", error);
@@ -85,6 +92,7 @@ function Baking() {
 		navigate,
 		gameId,
 		token,
+		setFail,
 	]);
 
 	useEffect(() => {
