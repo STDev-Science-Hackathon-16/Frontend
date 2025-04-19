@@ -28,7 +28,7 @@ function Ending() {
 			<img
 				src="/complete.png"
 				alt="완성"
-				className="absolute top-[15%] left-[15%] w-[200px] m-4"
+				className="absolute top-[15%] left-[15%] w-[30%] m-4"
 			/>
 			<img
 				src="/dish.png"
