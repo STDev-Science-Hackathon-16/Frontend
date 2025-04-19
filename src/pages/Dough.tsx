@@ -67,7 +67,10 @@ function Dough() {
 			strongflourClickCount +
 			saltClickCount +
 			sugarClickCount;
-		return totalClicks >= 1 ? "/bowl1.png" : "/bowl.png";
+
+		if (totalClicks >= 3) return "/bowl1.png";
+		if (totalClicks >= 1) return "/bowl2.png";
+		return "/bowl.png";
 	};
 
 	const getWaterImage = () => {

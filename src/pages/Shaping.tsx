@@ -45,7 +45,7 @@ function Shaping() {
 			const result = await response.json();
 
 			if (result.status === "success" && result.data.pass === true) {
-				navigate("/ending");
+				navigate("/secondary");
 			} else if (result.status === "success" && result.data.pass === false) {
 				navigate("/fail");
 			}
