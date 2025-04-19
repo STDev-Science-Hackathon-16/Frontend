@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useCallback, useRef } from "react";
+import { useTokenStore } from "@/stores/useTokenStore";
 
 function PrimaryFermentation() {
 	const navigate = useNavigate();
+	const token = useTokenStore((state) => state.token);
+
 	const [showTutorial, setShowTutorial] = useState(true);
 	const [temperature, setTemperature] = useState(25);
 	const [progress, setProgress] = useState(0);
@@ -109,7 +112,7 @@ function PrimaryFermentation() {
 				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
-					"X-USER-ID": "1",
+					"X-USER-ID": token?.toString() || "",
 				},
 				body: JSON.stringify({
 					gameId: 26,
@@ -130,7 +133,7 @@ function PrimaryFermentation() {
 		} catch (error) {
 			console.error("결과 전송 실패:", error);
 		}
-	}, [navigate, doughProgress, temperature]);
+	}, [navigate, doughProgress, temperature, token]);
 
 	useEffect(() => {
 		const elapsedSeconds = Math.floor(

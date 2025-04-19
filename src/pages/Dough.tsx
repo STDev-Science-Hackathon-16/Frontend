@@ -6,7 +6,7 @@ function Dough() {
 	const navigate = useNavigate();
 	const [showTutorial, setShowTutorial] = useState(true);
 
-	const token = useTokenStore().token;
+	const token = useTokenStore((state) => state.token);
 
 	const [waterClickCount, setWaterClickCount] = useState(0);
 	const [oliveoilClickCount, setOliveoilClickCount] = useState(0);
@@ -130,7 +130,7 @@ function Dough() {
 				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
-					"X-USER-ID": String(token),
+					"X-USER-ID": token?.toString() || "",
 				},
 				body: JSON.stringify({ select }),
 			});
