@@ -1,32 +1,36 @@
-import { useEffect, useImperativeHandle, useState, forwardRef } from "react";
+import { useImperativeHandle, useRef, useState, forwardRef } from "react";
 
 export type GetRandomArrayHandle = {
 	removeIfMatch: (value: number) => void;
 };
 
+const generateRandomArray = () =>
+	Array.from({ length: 10 }, () => Math.floor(Math.random() * 4));
+
 const GetRandomArray = forwardRef<GetRandomArrayHandle>((_, ref) => {
-	const [images, setImages] = useState<number[]>([]);
+	const queuesRef = useRef<number[][]>([
+		generateRandomArray(),
+		generateRandomArray(),
+		generateRandomArray(),
+	]);
+	const [activeIndex, setActiveIndex] = useState(0);
+	const [, forceUpdate] = useState(0);
 
 	useImperativeHandle(ref, () => ({
 		removeIfMatch: (value: number) => {
-			setImages((prev) => {
-				if (prev.length > 0 && prev[0] === value) {
-					return prev.slice(1);
+			const currentQueue = queuesRef.current[activeIndex];
+			if (currentQueue.length > 0 && currentQueue[0] === value) {
+				queuesRef.current[activeIndex] = currentQueue.slice(1);
+				forceUpdate((n) => n + 1);
+
+				if (queuesRef.current[activeIndex].length === 0) {
+					setTimeout(() => {
+						setActiveIndex((prev) => prev + 1);
+					}, 100);
 				}
-				return prev;
-			});
-		},
-		getFirst: () => {
-			return images.length > 0 ? images[0] : null;
+			}
 		},
 	}));
-
-	useEffect(() => {
-		const randoms = Array.from({ length: 10 }, () =>
-			Math.floor(Math.random() * 4),
-		);
-		setImages(randoms);
-	}, []);
 
 	const getImageSrc = (num: number) => {
 		switch (num) {
@@ -43,29 +47,21 @@ const GetRandomArray = forwardRef<GetRandomArrayHandle>((_, ref) => {
 		}
 	};
 
-	// 💡 부모에서 호출할 함수 노출
-	useImperativeHandle(ref, () => ({
-		removeIfMatch: (value: number) => {
-			setImages((prev) => {
-				if (prev.length > 0 && prev[0] === value) {
-					return prev.slice(1);
-				}
-				return prev;
-			});
-		},
-	}));
+	const currentQueue = queuesRef.current[activeIndex] || [];
 
 	return (
-		<div className="flex gap-2 items-center justify-center mt-8">
-			{images.map((num, idx) => (
-				<img
-					// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-					key={idx}
-					src={getImageSrc(num)}
-					alt={`img-${idx}`}
-					className="w-12 h-12"
-				/>
-			))}
+		<div className="flex flex-col items-center gap-4 mt-8">
+			<div className="flex gap-2">
+				{currentQueue.map((num, idx) => (
+					<img
+						// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+						key={idx}
+						src={getImageSrc(num)}
+						alt={`queue-${idx}`}
+						className="w-12 h-12"
+					/>
+				))}
+			</div>
 		</div>
 	);
 });

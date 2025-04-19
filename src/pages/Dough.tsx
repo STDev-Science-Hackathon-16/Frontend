@@ -127,15 +127,18 @@ function Dough() {
 		}
 
 		try {
-			const response = await fetch("http://54.79.169.133:8080/api/game/step1", {
-				method: "POST",
-				credentials: "include",
-				headers: {
-					"Content-Type": "application/json",
-					"X-USER-ID": token?.toString() || "",
+			const response = await fetch(
+				"http://54.180.191.123:8080//api/game/step1",
+				{
+					method: "POST",
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json",
+						"X-USER-ID": token?.toString() || "",
+					},
+					body: JSON.stringify({ select }),
 				},
-				body: JSON.stringify({ select }),
-			});
+			);
 
 			const result = await response.json();
 

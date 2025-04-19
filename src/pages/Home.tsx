@@ -34,7 +34,7 @@ function Home() {
 
 	const onSubmit = async (data: LoginForm) => {
 		try {
-			const response = await fetch("http://54.79.169.133:8080/api/member", {
+			const response = await fetch("http://54.180.191.123:8080/api/member", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

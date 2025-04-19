@@ -77,17 +77,20 @@ function SecondaryFermentation() {
 
 	const handleNextClick = async () => {
 		try {
-			const response = await fetch("http://54.79.169.133:8080/api/game/step4", {
-				method: "POST",
-				credentials: "include",
-				headers: {
-					"Content-Type": "application/json",
-					"X-USER-ID": token?.toString() || "",
+			const response = await fetch(
+				"http://54.180.191.123:8080/api/game/step4",
+				{
+					method: "POST",
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json",
+						"X-USER-ID": token?.toString() || "",
+					},
+					body: JSON.stringify({
+						quiz: correctCount,
+					}),
 				},
-				body: JSON.stringify({
-					quiz: correctCount,
-				}),
-			});
+			);
 
 			const result = await response.json();
 

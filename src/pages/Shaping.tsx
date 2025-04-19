@@ -26,18 +26,21 @@ function Shaping() {
 
 	const handleNextClick = async () => {
 		try {
-			const response = await fetch("http://54.79.169.133:8080/api/game/step3", {
-				method: "POST",
-				credentials: "include",
-				headers: {
-					"Content-Type": "application/json",
-					"X-USER-ID": token?.toString() || "",
+			const response = await fetch(
+				"http://54.180.191.123:8080/api/game/step3",
+				{
+					method: "POST",
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json",
+						"X-USER-ID": token?.toString() || "",
+					},
+					body: JSON.stringify({
+						gameId: gameId,
+						tap: doughcatClickCount,
+					}),
 				},
-				body: JSON.stringify({
-					gameId: gameId,
-					tap: doughcatClickCount,
-				}),
-			});
+			);
 
 			const result = await response.json();
 

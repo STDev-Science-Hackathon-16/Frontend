@@ -108,20 +108,23 @@ function PrimaryFermentation() {
 		else if (temperature >= 40) flag = 2;
 
 		try {
-			const response = await fetch("http://54.79.169.133:8080/api/game/step2", {
-				method: "POST",
-				credentials: "include",
-				headers: {
-					"Content-Type": "application/json",
-					"X-USER-ID": token?.toString() || "",
+			const response = await fetch(
+				"http://54.180.191.123:8080/api/game/step2",
+				{
+					method: "POST",
+					credentials: "include",
+					headers: {
+						"Content-Type": "application/json",
+						"X-USER-ID": token?.toString() || "",
+					},
+					body: JSON.stringify({
+						gameId: gameId,
+						time: elapsedSeconds,
+						temperature: doughProgress,
+						flag: flag,
+					}),
 				},
-				body: JSON.stringify({
-					gameId: gameId,
-					time: elapsedSeconds,
-					temperature: doughProgress,
-					flag: flag,
-				}),
-			});
+			);
 			console.log(elapsedSeconds, doughProgress, "flag:", flag);
 
 			const result = await response.json();
