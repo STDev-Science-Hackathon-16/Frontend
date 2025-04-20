@@ -28,7 +28,8 @@ function Baking() {
 
 	const randomRef = useRef<GetRandomArrayHandle | null>(null);
 
-	useEffect(() => { // 게임 실패 상황
+	useEffect(() => {
+		// 게임 실패 상황
 		if (lifes <= 0 && !gameOver && !gameWon) {
 			setGameOver(true);
 
@@ -62,7 +63,7 @@ function Baking() {
 					);
 					if (!response.ok) throw new Error("Failed to post game data");
 					const result = await response.json();
-				
+
 					if (result.status === "success" && result.data.pass === false) {
 						setFail(3);
 						navigate("/fail");
@@ -90,8 +91,8 @@ function Baking() {
 		setFail,
 	]);
 
-
-	useEffect(() => { // 게임 성공 상황
+	useEffect(() => {
+		// 게임 성공 상황
 		if (gameWon) {
 			console.log(
 				`Stats: downTem=${downTem}, topTem=${topTem}, downHum=${downHum}, topHum=${topHum}`,
@@ -128,7 +129,6 @@ function Baking() {
 						useBreadStore.getState().setBreadState(result.data);
 						navigate("/ending");
 					}
-					
 				} catch (error) {
 					console.error("Error posting game data:", error);
 				}
@@ -136,8 +136,6 @@ function Baking() {
 			postGameData();
 		}
 	}, [
-		lifes,
-		gameOver,
 		gameWon,
 		temDieFlag,
 		humDieFlag,
@@ -149,7 +147,6 @@ function Baking() {
 		navigate,
 		gameId,
 		token,
-		setFail,
 	]);
 
 	useEffect(() => {
