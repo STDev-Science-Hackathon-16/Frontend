@@ -167,6 +167,36 @@ function Baking() {
 		}
 	};
 
+	useEffect(() => {
+		const handleKeyPress = (e: KeyboardEvent) => {
+			if (gameOver || gameWon || showTutorial) return;
+	
+			switch (e.key) {
+				case "ArrowDown":
+					handleClick(2); // 온도 ↓
+					break;
+				case "ArrowUp":
+					handleClick(3); // 온도 ↑
+					break;
+				case "ArrowLeft":
+					handleClick(0); // 습도 ↓
+					break;
+				case "ArrowRight":
+					handleClick(1); // 습도 ↑
+					break;
+				default:
+					break;
+			}
+		};
+	
+		window.addEventListener("keydown", handleKeyPress);
+	
+		return () => {
+			window.removeEventListener("keydown", handleKeyPress);
+		};
+	}, [gameOver, gameWon, showTutorial]);
+
+
 	const handleClick = (clickedValue: number) => {
 		if (showTutorial || gameOver || gameWon || !randomRef.current) return;
 
