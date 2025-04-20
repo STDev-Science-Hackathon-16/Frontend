@@ -45,9 +45,7 @@ function Home() {
 
 	const [isOpened, setIsOpened] = useState(false);
 	const { token, setToken } = useTokenStore();
-	const [rewardIds, setRewardIds] = useState<number[]>([
-		1, 2, 3, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15,
-	]);
+	const [rewardIds, setRewardIds] = useState<number[]>([]);
 
 	const navigate = useNavigate();
 

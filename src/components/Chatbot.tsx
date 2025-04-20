@@ -5,6 +5,7 @@ import axios from "axios";
 import ReactMarkdown from "react-markdown";
 import { AiOutlineSend } from "react-icons/ai";
 import { useFailStore } from "@/stores/useFailStore";
+import { useNavigate } from "react-router-dom";
 interface ChatMessage {
 	role: "user" | "assistant" | "system";
 	content: string;
@@ -68,10 +69,8 @@ const context = `당신은 숙련된 베이킹 전문가입니다. 사용자가 
 
 const Chatbot = () => {
 	const fail = useFailStore();
+	const navigate = useNavigate();
 	const getFailImage = () => {
-		if (typeof fail === "number" && fail === 0) {
-			return "/doughdie.png";
-		}
 		if (typeof fail === "number" && fail === 1) {
 			return "/fermdie.png";
 		}
@@ -81,6 +80,7 @@ const Chatbot = () => {
 		if (typeof fail === "number" && fail === 3) {
 			return "/bakingdie.png";
 		}
+		return "/doughdie.png";
 	};
 
 	const [userInput, setUserInput] = useState<string>(""); // 사용자 입력 상태 관리
@@ -196,6 +196,10 @@ const Chatbot = () => {
 		}
 	}, [chatHistory]);
 
+	const handleHomeClick = () => {
+		navigate("/");
+	};
+
 	return (
 		<div
 			className="flex items-center justify-center min-h-screen w-full bg-cover bg-top fixed top-0 left-0 right-0 bottom-0 overflow-hidden"
@@ -288,6 +292,11 @@ const Chatbot = () => {
 						</form>
 					</div>
 				</section>
+				<button
+					type="button"
+					onClick={handleHomeClick}
+					className="absolute bottom-[5%] left-[15%] w-[20%] h-[12%] bg-[url('/homebtn.png')] bg-contain bg-no-repeat bg-center bg-transparent p-0 border-none z-20"
+				/>
 			</div>
 		</div>
 	);
