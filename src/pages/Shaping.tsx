@@ -9,7 +9,19 @@ function Shaping() {
 	const { setFail } = useFailStore();
 	const token = useTokenStore((state) => state.token);
 	const gameId = useGameIdStore((state) => state.gameId);
-
+	const yeastMessage = [
+		"반죽을 클릭해주세요!",
+		"더 클릭해주세요",
+		"더 클릭해도 될 것 같아요!",
+		"그만 클릭해도 될 것 같아요!",
+	];
+	const getMessage = () => {
+		if (doughcatClickCount >= 35) return yeastMessage[3];
+		if (doughcatClickCount >= 30) return yeastMessage[2];
+		if (doughcatClickCount >= 20) return yeastMessage[2];
+		if (doughcatClickCount >= 10) return yeastMessage[1];
+		return yeastMessage[0];
+	};
 	const [showTutorial, setShowTutorial] = useState(true);
 
 	const [doughcatClickCount, setDoughcatClickCount] = useState(0);
@@ -99,24 +111,24 @@ function Shaping() {
 			)}
 			<div className="absolute top-8 left-8 right-8 flex justify-between items-start z-20">
 				<div className="flex items-center gap-2">
-					<div className="relative w-20 h-20 flex-shrink-0">
+					<div>
 						<img
 							src="/Rectangle1527.png"
 							alt="frame"
-							className="absolute top-0 left-0 w-full h-full"
+							className="absolute top-[16%] left-[0%] w-[5%] transform -translate-y-1/2 z-30"
 						/>
 						<img
 							src="/normalyeast.png"
 							alt="character"
-							className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-12 z-10"
+							className="absolute top-[16%] left-[0%] w-[5%] transform -translate-y-1/2 z-30"
 						/>
 					</div>
-					<div className="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white text-lg whitespace-nowrap">
-						할 말이 들어갑니다(Pretendard)
+					<div className="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white absolute top-[16%] left-[5%] w-[20%] transform -translate-y-1/2 z-30 whitespace-nowrap">
+						{getMessage()}
 					</div>
 				</div>
-				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md text-center text-sm z-30">
-					<img src="/progress3.png" alt="프로그레스 바" />
+				<div className="absolute top-[20%] left-[50%] transform -translate-x-1/2 rounded-md text-center text-sm z-30">
+					<img src="/progress1.png" alt="프로그레스 바" />
 				</div>
 				<button
 					type="button"
