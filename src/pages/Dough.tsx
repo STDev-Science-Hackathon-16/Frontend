@@ -227,15 +227,15 @@ function Dough() {
 						<img
 							src="/Rectangle1527.png"
 							alt="frame"
-							className="absolute top-[16%] left-[2%] w-[5%] transform -translate-y-1/2 z-30"
+							className="absolute top-[16%] left-[0%] w-[5%] transform -translate-y-1/2 z-30"
 						/>
 						<img
 							src="/normalyeast.png"
 							alt="character"
-							className="absolute top-[16%] left-[2%] w-[5%] transform -translate-y-1/2 z-30"
+							className="absolute top-[16%] left-[0%] w-[5%] transform -translate-y-1/2 z-30"
 						/>
 					</div>
-					<div className="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white absolute top-[16%] left-[8%] w-[20%] transform -translate-y-1/2 z-30 whitespace-nowrap">
+					<div className="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white absolute top-[16%] left-[5%] w-[20%] transform -translate-y-1/2 z-30 whitespace-nowrap">
 						{getMessage()}
 					</div>
 				</div>

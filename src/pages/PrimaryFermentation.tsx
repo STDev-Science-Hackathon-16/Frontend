@@ -15,6 +15,17 @@ function PrimaryFermentation() {
 	const [progress, setProgress] = useState(0);
 	const startTimeRef = useRef(Date.now());
 	const isGameOver = useRef(false);
+	const yeastMessage = [
+		"시간이 너무 오래 지났어요!",
+		"집중해서 최적 온도를 유지해 주세요!",
+		"발효가 진행 중입니다!",
+	];
+	const getMessage = () => {
+		if (doughProgress >= 90) return yeastMessage[0];
+		if (doughProgress >= 50) return yeastMessage[1];
+		if (doughProgress >= 0) return yeastMessage[2];
+		return yeastMessage[2];
+	};
 
 	const getDoughLeft = () => {
 		const start = 15.5;
@@ -198,24 +209,24 @@ function PrimaryFermentation() {
 			)}
 			<div className="absolute top-8 left-8 right-8 flex justify-between items-start z-20">
 				<div className="flex items-center gap-2">
-					<div className="relative w-20 h-20 flex-shrink-0">
+					<div>
 						<img
 							src="/Rectangle1527.png"
 							alt="frame"
-							className="absolute top-0 left-0 w-full h-full"
+							className="absolute top-[16%] left-[0%] w-[5%] transform -translate-y-1/2 z-30"
 						/>
 						<img
 							src="/normalyeast.png"
 							alt="character"
-							className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-12 z-10"
+							className="absolute top-[16%] left-[0%] w-[5%] transform -translate-y-1/2 z-30"
 						/>
 					</div>
-					<div className="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white text-lg whitespace-nowrap">
-						할 말이 들어갑니다(Pretendard)
+					<div className="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white absolute top-[16%] left-[5%] w-[20%] transform -translate-y-1/2 z-30 whitespace-nowrap">
+						{getMessage()}
 					</div>
 				</div>
-				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md text-center text-sm z-30">
-					<img src="/progress2.png" alt="프로그레스 바" />
+				<div className="absolute top-[20%] left-[50%] transform -translate-x-1/2 rounded-md text-center text-sm z-30">
+					<img src="/progress1.png" alt="프로그레스 바" />
 				</div>
 				<button
 					type="button"
@@ -231,7 +242,7 @@ function PrimaryFermentation() {
 					style={{ scale: 2.0 }}
 					src="/timeRect.png"
 					alt="타임"
-					className="absolute top-[25%] left-[63%] transform -translate-x-1/2 -translate-y-1/2 w-1/3 md:w-1/4 z-0"
+					className="absolute top-[25%] left-[63%] transform -translate-x-1/2 -translate-y-1/2 w-[33%] md:w-1/4 z-0"
 				/>
 				<div
 					style={{
@@ -256,28 +267,31 @@ function PrimaryFermentation() {
 						left: `${getDoughLeft()}%`,
 						transition: "left 0.2s linear",
 					}}
-					className="absolute top-[-1.2%] transform -translate-x-1/2 -translate-y-1/2 w-1/3 md:w-1/4 z-30"
+					className="absolute top-[-1.2%] transform -translate-x-1/2 -translate-y-1/2 w-[33%] md:w-1/4 z-30"
 				/>
 
 				<img
 					style={{ scale: 1.2 }}
 					src={getDoughImage()}
 					alt="반죽"
-					className="absolute top-[60%] left-[53%] transform -translate-x-1/2 -translate-y-1/2 w-1/3 md:w-1/4 z-0"
-				/>
-				<img
-					style={{ scale: 0.7 }}
-					src="/temp1.png"
-					alt="온도계"
-					className="absolute top-[18%] left-[20%] w-[12%] md:w-[6%]"
+					className="absolute top-[60%] left-[53%] transform -translate-x-1/2 -translate-y-1/2  w-[33%] md:w-1/4 z-0"
 				/>
 				<div
-					style={{
-						scale: 0.39,
-						height: getThermometerHeight(),
-					}}
-					className="absolute bottom-[25%] left-[21.5%] w-[3%] bg-[#CE0303] rounded-sm z-20 transition-all duration-200 origin-bottom"
-				/>
+					className="absolute top-[18%] left-[20%] w-[12%] md:w-[6%] flex justify-center items-end"
+					style={{ aspectRatio: "1 / 5", paddingBottom: "2%" }} // 온도계 비율 유지
+				>
+					<img
+						src="/temp1.png"
+						alt="온도계"
+						className="absolute inset-0 w-full h-full z-10 object-contain"
+					/>
+					<div
+						style={{
+							height: getThermometerHeight(),
+						}}
+						className="w-[20%] bg-[#CE0303] rounded-sm z-20 transition-all duration-200"
+					/>
+				</div>
 			</div>
 			<button
 				type="button"
