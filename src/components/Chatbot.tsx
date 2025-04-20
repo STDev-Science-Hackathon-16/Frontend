@@ -123,7 +123,7 @@ const Chatbot = () => {
 				{
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer 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`,
+						Authorization: `Bearer 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`,
 					},
 				},
 			);
