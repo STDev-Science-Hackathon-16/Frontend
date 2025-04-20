@@ -170,7 +170,7 @@ function Baking() {
 	useEffect(() => {
 		const handleKeyPress = (e: KeyboardEvent) => {
 			if (gameOver || gameWon || showTutorial) return;
-	
+
 			switch (e.key) {
 				case "ArrowDown":
 					handleClick(2); // 온도 ↓
@@ -188,14 +188,13 @@ function Baking() {
 					break;
 			}
 		};
-	
+
 		window.addEventListener("keydown", handleKeyPress);
-	
+
 		return () => {
 			window.removeEventListener("keydown", handleKeyPress);
 		};
 	}, [gameOver, gameWon, showTutorial]);
-
 
 	const handleClick = (clickedValue: number) => {
 		if (showTutorial || gameOver || gameWon || !randomRef.current) return;
@@ -306,21 +305,40 @@ function Baking() {
 				<>
 					{/* Top Bar */}
 					<div className="absolute top-8 left-8 right-8 flex justify-between items-start z-20">
-						{/* Character & Speech */}
 						<div className="flex items-center gap-2">
-							{/* ... character image ... */}
-							<img
-								src="/normalyeast.png"
-								alt="character"
-								className="w-16 h-12 z-10"
-							/>
+							<div className="relative w-16 h-16">
+								<img
+									src="/Rectangle1527.png"
+									alt="frame"
+									className="absolute top-0 left-0 w-full h-full z-0"
+								/>
+								{gameOver ? (
+									<img
+										src="/sorrowyeast.png"
+										alt="character"
+										className="absolute w-full h-full z-10"
+									/>
+								) : gameWon ? (
+									<img
+										src="/happyyeast.png"
+										alt="character"
+										className="absolute w-full h-full z-10"
+									/>
+								) : (
+									<img
+										src="/normalyeast.png"
+										alt="character"
+										className="absolute w-full h-full z-10"
+									/>
+								)}
+							</div>
+
 							<div className="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white text-lg whitespace-nowrap">
-								{/* Dynamic speech based on state? */}
 								{gameOver
-									? "이런! 실패했어..."
+									? "이런! 실패했어요..."
 									: gameWon
-										? "완벽해!"
-										: "잘 보고 눌러!"}
+										? "완벽해요!"
+										: "잘 보고 버튼을 눌러주세요!"}
 							</div>
 						</div>
 						{/* Progress Bar */}
@@ -340,7 +358,7 @@ function Baking() {
 					</div>
 
 					{/* Lifes */}
-					<div className="absolute top-[15%] left-[4.5%] transform -translate-y-1/2 z-10 flex gap-2 scale-90">
+					<div className="absolute bottom-[40%] left-[6%] transform -translate-y-1/2 z-10 flex gap-2 scale-90">
 						{" "}
 						{/* Adjusted position & scale */}
 						{Array.from({ length: 3 }, (_, i) => (

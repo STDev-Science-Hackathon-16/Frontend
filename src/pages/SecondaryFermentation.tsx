@@ -11,6 +11,7 @@ function SecondaryFermentation() {
 	const [clickcount, setClickcount] = useState(0);
 	const token = useTokenStore((state) => state.token);
 	const gameId = useGameIdStore((state) => state.gameId);
+	const getMessage = ["문제를 읽고 정답을 맞혀주세요"];
 
 	const questions = [
 		{
@@ -148,23 +149,23 @@ function SecondaryFermentation() {
 			)}
 			<div className="absolute top-8 left-8 right-8 flex justify-between items-start z-20">
 				<div className="flex items-center gap-2">
-					<div className="relative w-20 h-20 flex-shrink-0">
+					<div>
 						<img
 							src="/Rectangle1527.png"
 							alt="frame"
-							className="absolute top-0 left-0 w-full h-full"
+							className="absolute top-[16%] left-[0%] w-[5%] transform -translate-y-1/2 z-30"
 						/>
 						<img
 							src="/normalyeast.png"
 							alt="character"
-							className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-12 z-10"
+							className="absolute top-[16%] left-[0%] w-[5%] transform -translate-y-1/2 z-30"
 						/>
 					</div>
-					<div className="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white text-lg whitespace-nowrap">
-						할 말이 들어갑니다(Pretendard)
+					<div className="bg-amber-500 px-4 py-2 rounded-2xl font-bold text-white absolute top-[16%] left-[5%] w-[20%] transform -translate-y-1/2 z-30 whitespace-nowrap">
+						{getMessage}
 					</div>
 				</div>
-				<div className="absolute top-8 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-md text-center text-sm z-30">
+				<div className="absolute top-[20%] left-[50%] transform -translate-x-1/2 rounded-md text-center text-sm z-30">
 					<img src="/progress4.png" alt="프로그레스 바" />
 				</div>
 				<button
@@ -183,7 +184,7 @@ function SecondaryFermentation() {
 				className="absolute top-[60%] left-[35%] transform -translate-x-1/2 -translate-y-1/2 w-1/3 md:w-1/4 z-0"
 			/>
 
-			<div className="absolute top-[35%] right-[13%] w-[600px] h-[auto] transform -translate-y-1/2">
+			<div className="absolute top-[35%] right-[13%] w-[40%] h-[auto] transform -translate-y-1/2">
 				<div className="relative w-full h-full">
 					<img
 						src="/question.png"
@@ -198,7 +199,7 @@ function SecondaryFermentation() {
 				</div>
 			</div>
 
-			<div className="absolute top-[65%] right-[13%] w-[600px] transform -translate-y-1/2 flex flex-col items-center">
+			<div className="absolute top-[65%] right-[13%] w-[40%] transform -translate-y-1/2 flex flex-col items-center">
 				{currentQuestion.answers.map((answer, index) => (
 					<button
 						key={`${currentQuestion.question}-${answer}`}

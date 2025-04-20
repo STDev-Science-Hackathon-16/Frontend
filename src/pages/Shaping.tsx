@@ -128,7 +128,7 @@ function Shaping() {
 					</div>
 				</div>
 				<div className="absolute top-[20%] left-[50%] transform -translate-x-1/2 rounded-md text-center text-sm z-30">
-					<img src="/progress1.png" alt="프로그레스 바" />
+					<img src="/progress3.png" alt="프로그레스 바" />
 				</div>
 				<button
 					type="button"
