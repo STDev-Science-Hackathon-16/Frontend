@@ -11,6 +11,8 @@ interface ChatMessage {
 	content: string;
 }
 
+const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+
 const step = ["1단계", "2단계", "3단계", "4단계", "5단계"];
 
 const context = `당신은 숙련된 베이킹 전문가입니다. 사용자가 치아바타, 포카치아, 사워도우 중 하나를 완성할 수 있도록 5단계에 걸쳐 안내해야 합니다.
@@ -123,7 +125,7 @@ const Chatbot = () => {
 				{
 					headers: {
 						"Content-Type": "application/json",
-						Authorization: `Bearer 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`,
+						Authorization: `Bearer ${apiKey}`,
 					},
 				},
 			);
