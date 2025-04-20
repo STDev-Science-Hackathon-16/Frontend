@@ -2,12 +2,22 @@ import { create } from "zustand";
 
 interface FailState {
 	fail: number;
-	setFail: (fail: number) => void;
+	failMessage: string;
+	setFail: (newState: {
+		failMessage: string | undefined;
+		fail: number;
+	}) => void;
 	clearFail: () => void;
 }
 
 export const useFailStore = create<FailState>((set) => ({
 	fail: 0,
-	setFail: (fail) => set({ fail }),
+	failMessage: "",
+	setFail: (newState) =>
+		set((state) => ({
+			...state,
+			fail: newState.fail,
+			failMessage: newState.failMessage,
+		})),
 	clearFail: () => set({ fail: 0 }),
 }));

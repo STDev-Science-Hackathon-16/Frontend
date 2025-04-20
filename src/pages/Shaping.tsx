@@ -68,7 +68,10 @@ function Shaping() {
 			if (result.status === "success" && result.data.pass === true) {
 				navigate("/secondary");
 			} else if (result.status === "success" && result.data.pass === false) {
-				setFail(2);
+				setFail({
+					fail: 2,
+					failMessage: result.data.message,
+				});
 				navigate("/fail");
 			}
 		} catch (error) {

@@ -179,7 +179,10 @@ function Dough() {
 				setGameId(result.data.gameId);
 				navigate("/primary");
 			} else if (result.status === "success" && result.data.pass === false) {
-				setFail(0);
+				setFail({
+					fail: 0,
+					failMessage: result.data.message,
+				});
 				navigate("/fail");
 			}
 		} catch (error) {

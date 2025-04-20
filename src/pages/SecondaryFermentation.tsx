@@ -110,7 +110,10 @@ function SecondaryFermentation() {
 			if (result.status === "success" && result.data.pass === true) {
 				navigate("/baking");
 			} else if (result.status === "success" && result.data.pass === false) {
-				setFail(1);
+				setFail({
+					fail: 1,
+					failMessage: result.data.message,
+				});
 				navigate("/fail");
 			}
 		} catch (error) {

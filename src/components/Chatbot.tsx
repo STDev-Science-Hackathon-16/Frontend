@@ -68,7 +68,7 @@ const context = `당신은 숙련된 베이킹 전문가입니다. 사용자가 
 캐릭터를 유지하며, 질문 + 설명 + 피드백을 균형 있게 담아주세요.`;
 
 const Chatbot = () => {
-	const fail = useFailStore();
+	const { fail, failMessage } = useFailStore();
 	const navigate = useNavigate();
 	const getFailImage = () => {
 		if (typeof fail === "number" && fail === 1) {
@@ -212,6 +212,9 @@ const Chatbot = () => {
 					alt="실패 반죽"
 					className="absolute top-[30%] left-[15%] w-[18%] m-4"
 				/>
+				<p className="mt-4 text-lg font-semibold text-gray-700 whitespace-pre-line">
+					{failMessage}
+				</p>
 				<section
 					id="chat-scroll-allowed"
 					className="card w-1/2 bg-white h-[90vh] shadow-lg rounded-xl"

@@ -65,7 +65,10 @@ function Baking() {
 					const result = await response.json();
 
 					if (result.status === "success" && result.data.pass === false) {
-						setFail(3);
+						setFail({
+							fail: 3,
+							failMessage: result.data.message,
+						});
 						navigate("/fail");
 					}
 				} catch (error) {

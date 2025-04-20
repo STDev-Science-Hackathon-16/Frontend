@@ -152,7 +152,10 @@ function PrimaryFermentation() {
 			if (result.status === "success" && result.data.pass === true) {
 				navigate("/shaping");
 			} else if (result.status === "success" && result.data.pass === false) {
-				setFail(1);
+				setFail({
+					fail: 1,
+					failMessage: result.data.message,
+				});
 				navigate("/fail");
 				console.log(result);
 			}
