@@ -28,7 +28,7 @@ function Baking() {
 
 	const randomRef = useRef<GetRandomArrayHandle | null>(null);
 
-	useEffect(() => {
+	useEffect(() => { // 게임 실패 상황
 		if (lifes <= 0 && !gameOver && !gameWon) {
 			setGameOver(true);
 
@@ -62,16 +62,73 @@ function Baking() {
 					);
 					if (!response.ok) throw new Error("Failed to post game data");
 					const result = await response.json();
-					if (result.status === "success" && result.data?.bread !== null) {
-						useBreadStore.getState().setBreadState(result.data);
-						navigate("/ending");
-					} else if (
-						result.status === "success" &&
-						result.data.pass === false
-					) {
+				
+					if (result.status === "success" && result.data.pass === false) {
 						setFail(3);
 						navigate("/fail");
 					}
+				} catch (error) {
+					console.error("Error posting game data:", error);
+				}
+			};
+			postGameData();
+		}
+	}, [
+		lifes,
+		gameOver,
+		gameWon,
+		temDieFlag,
+		humDieFlag,
+		timeFlag,
+		downTem,
+		topTem,
+		downHum,
+		topHum,
+		navigate,
+		gameId,
+		token,
+		setFail,
+	]);
+
+
+	useEffect(() => { // 게임 성공 상황
+		if (gameWon) {
+			console.log(
+				`Stats: downTem=${downTem}, topTem=${topTem}, downHum=${downHum}, topHum=${topHum}`,
+			);
+
+			const postGameData = async () => {
+				const payload = {
+					gameId: gameId,
+					downTem: downTem,
+					topTem: topTem,
+					downHum: downHum,
+					topHum: topHum,
+					temDieFlag: temDieFlag,
+					humDieFlag: humDieFlag,
+					timeFlag: timeFlag,
+				};
+				console.log("Payload:", payload);
+				try {
+					const response = await fetch(
+						"http://54.180.191.123:8080/api/game/step5",
+						{
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+								"X-USER-ID": token?.toString() || "",
+							},
+							body: JSON.stringify(payload),
+						},
+					);
+					if (!response.ok) throw new Error("Failed to post game data");
+					const result = await response.json();
+
+					if (result.status === "success" && result.data?.bread != null) {
+						useBreadStore.getState().setBreadState(result.data);
+						navigate("/ending");
+					}
+					
 				} catch (error) {
 					console.error("Error posting game data:", error);
 				}
