@@ -112,7 +112,7 @@ function SecondaryFermentation() {
 			} else if (result.status === "success" && result.data.pass === false) {
 				setFail({
 					fail: 1,
-					failMessage: result.data.message,
+					failMessage: result.message,
 				});
 				navigate("/fail");
 			}

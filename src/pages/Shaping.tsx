@@ -70,7 +70,7 @@ function Shaping() {
 			} else if (result.status === "success" && result.data.pass === false) {
 				setFail({
 					fail: 2,
-					failMessage: result.data.message,
+					failMessage: result.message,
 				});
 				navigate("/fail");
 			}
