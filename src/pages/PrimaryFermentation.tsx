@@ -4,6 +4,7 @@ import { useTokenStore } from "@/stores/useTokenStore";
 import { useGameIdStore } from "@/stores/useGameIdStore";
 import toast from "react-hot-toast";
 import { useFailStore } from "@/stores/useFailStore";
+import { handleSubmitStep2 } from "@/api/Primary.api";
 
 function PrimaryFermentation() {
 	const { setFail } = useFailStore();
@@ -116,32 +117,20 @@ function PrimaryFermentation() {
 		const elapsedSeconds = Math.floor(
 			(Date.now() - startTimeRef.current) / 1000,
 		);
-
-		let flag = 0;
-		if (temperature <= 10) flag = 1;
-		else if (temperature >= 40) flag = 2;
-
 		try {
-			const response = await fetch(
-				"http://54.180.191.123:8080/api/game/step2",
-				{
-					method: "POST",
-					credentials: "include",
-					headers: {
-						"Content-Type": "application/json",
-						"X-USER-ID": token?.toString() || "",
-					},
-					body: JSON.stringify({
-						gameId: gameId,
-						time: elapsedSeconds,
-						temperature: doughProgress,
-						flag: flag,
-					}),
-				},
-			);
-			console.log(elapsedSeconds, doughProgress, "flag:", flag);
+			const {
+				result,
+				flag,
+				doughProgress: sentProgress,
+			} = await handleSubmitStep2({
+				token: token?.toString() || "",
+				gameId: gameId?.toString() || "",
+				elapsedSeconds,
+				doughProgress,
+				temperature,
+			});
 
-			const result = await response.json();
+			console.log(elapsedSeconds, sentProgress, "flag:", flag);
 
 			if (result.data?.reward?.trim()) {
 				toast(result.data.reward.trim(), {
@@ -160,7 +149,7 @@ function PrimaryFermentation() {
 				console.log(result);
 			}
 		} catch (error) {
-			console.error("결과 전송 실패:", error);
+			// 이미 콘솔에서 처리 중이니 별도 처리 생략 가능
 		}
 	}, [navigate, doughProgress, temperature, token, gameId, setFail]);
 
