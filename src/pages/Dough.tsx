@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useFailStore } from "@/stores/useFailStore";
+import { handleSubmitStep1 } from "@/api/Dough.api";
 
 function Dough() {
 	const navigate = useNavigate();
@@ -120,59 +121,26 @@ function Dough() {
 	};
 
 	const handleNextClick = async () => {
-		const select: number[] = [];
-		if (waterClickCount >= 1) {
-			for (let i = 0; i < waterClickCount; i++) {
-				select.push(1);
-			}
-		}
-		if (oliveoilClickCount >= 1) {
-			for (let i = 0; i < oliveoilClickCount; i++) {
-				select.push(2);
-			}
-		}
-		if (levainClickCount === 1) {
-			select.push(3);
-		}
-		if (weakflourClickCount === 1) {
-			select.push(4);
-		}
-		if (strongflourClickCount === 1) {
-			select.push(5);
-		}
-		if (yeastClickCount === 1) {
-			select.push(6);
-		}
-		if (saltClickCount === 1) {
-			select.push(7);
-		}
-		if (sugarClickCount === 1) {
-			select.push(8);
-		}
-		if (bakingpowderClickCount === 1) {
-			select.push(9);
-		}
+		const clickCounts = {
+			waterClickCount,
+			oliveoilClickCount,
+			levainClickCount,
+			weakflourClickCount,
+			strongflourClickCount,
+			yeastClickCount,
+			saltClickCount,
+			sugarClickCount,
+			bakingpowderClickCount,
+		};
 
 		try {
-			const response = await fetch(
-				"http://54.180.191.123:8080/api/game/step1",
-				{
-					method: "POST",
-					credentials: "include",
-					headers: {
-						"Content-Type": "application/json",
-						"X-USER-ID": token?.toString() || "",
-					},
-					body: JSON.stringify({ select }),
-				},
+			const result = await handleSubmitStep1(
+				clickCounts,
+				token?.toString() || null,
 			);
 
-			const result = await response.json();
-
 			if (result.data?.reward?.trim()) {
-				toast(result.data.reward.trim(), {
-					icon: "🎉",
-				});
+				toast(result.data.reward.trim(), { icon: "🎉" });
 			}
 
 			if (result.status === "success" && result.data.pass === true) {
