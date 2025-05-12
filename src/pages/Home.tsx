@@ -157,6 +157,7 @@ function Home() {
 								maxLength={11}
 								pattern="\d*"
 								placeholder="- 없이 전화번호를 입력해주세요"
+								autoComplete="off"
 								className="absolute top-0 left-0 w-full h-full bg-transparent px-6 py-4 text-center text-black text-lg outline-none z-10"
 								{...register("phone")}
 								onInput={(e) => {
